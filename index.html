@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIVA</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1d2433; --muted:#5b6475; --line:#d9dee7; --riva:#0f6e66; --gnani:#6a3fb5; --buyer:#eef1f6; --panel:#f6f7f9; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Figtree, system-ui, sans-serif; color:var(--ink); background:#fff; }
+  .wrap { display:grid; grid-template-columns: 1fr 1fr; height:100vh; }
+  .chat, .calls { display:flex; flex-direction:column; min-height:0; }
+  .calls { background:var(--panel); border-left:1px solid var(--line); }
+  h1 { font-size:18px; margin:0; padding:16px 20px; border-bottom:1px solid var(--line); }
+  h2 { font-size:15px; margin:0; padding:16px 20px; border-bottom:1px solid var(--line); color:var(--muted); font-weight:600; }
+  .log { flex:1; overflow:auto; padding:16px 20px; }
+  .msg { max-width:85%; padding:10px 14px; border-radius:12px; margin:0 0 10px; line-height:1.45; white-space:pre-wrap; }
+  .buyer { background:var(--buyer); margin-left:auto; }
+  .riva { border:1px solid var(--riva); }
+  .msg b { display:block; font-size:12px; color:var(--muted); margin-bottom:2px; }
+  .msg audio { display:block; margin-top:8px; width:100%; }
+  .call { background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:10px; font-size:13px; }
+  .call .name { font-weight:600; color:var(--riva); }
+  .call.gnani .name { color:var(--gnani); }
+  pre { font-family:'JetBrains Mono', monospace; font-size:12px; white-space:pre-wrap; word-break:break-word; margin:6px 0 0; }
+  .bar { display:flex; gap:12px; align-items:center; padding:8px 20px 0; flex-wrap:wrap; font-size:14px; }
+  form { display:flex; gap:8px; padding:12px 20px; border-top:1px solid var(--line); }
+  input[type=text] { flex:1; font:inherit; padding:10px 12px; border:1px solid var(--line); border-radius:8px; }
+  button { font:inherit; padding:10px 16px; border:0; border-radius:8px; background:var(--riva); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--ink); border:1px solid var(--line); }
+  button.mic { background:var(--gnani); }
+  button.mic.recording { background:#b42318; }
+  button:disabled { opacity:.5; cursor:default; }
+  button:focus-visible, input:focus-visible { outline:2px solid var(--riva); outline-offset:2px; }
+  .status { font-size:13px; color:var(--muted); padding:6px 20px 0; min-height:18px; }
+  @media (max-width: 800px) { .wrap { grid-template-columns:1fr; height:auto; } .log { max-height:60vh; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="chat">
+    <h1>RIVA</h1>
+    <div class="log" id="chatLog"></div>
+    <div class="bar">
+      <button type="button" class="mic" id="micBtn">Speak</button>
+      <label><input type="checkbox" id="speakToggle" checked> Speak replies with Gnani</label>
+    </div>
+    <div class="status" id="status"></div>
+    <form id="form">
+      <input type="text" id="input" placeholder="Or type the buyer's message" autocomplete="off">
+      <button type="submit">Send</button>
+      <button type="button" class="secondary" id="reset">New conversation</button>
+    </form>
+  </section>
+  <section class="calls">
+    <h2>Calls and responses</h2>
+    <div class="log" id="callLog"></div>
+  </section>
+</div>
+<script>
+  // ===== Paste your Apps Script web app URL (ends in /exec). This is NOT the Gnani key. =====
+  const BRIDGE_URL = 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+
+  let history = [];
+  let recorder = null, chunks = [], recTimer = null, recStart = 0, busy = false;
+  const $ = id => document.getElementById(id);
+  const chatLog = $('chatLog'), callLog = $('callLog'), input = $('input'), micBtn = $('micBtn');
+  const setStatus = t => { $('status').textContent = t; };
+
+  // POST as text/plain (no custom headers) so the browser sends a "simple" request with no CORS preflight.
+  async function call(action, payload) {
+    const res = await fetch(BRIDGE_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action }, payload || {})) });
+    const data = await res.json();
+    if (data && data.ok === false && data.error) throw new Error(data.error);
+    return data;
+  }
+
+  function addMsg(who, text) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + who;
+    d.innerHTML = '<b>' + (who === 'buyer' ? 'Buyer' : 'RIVA') + '</b>';
+    d.appendChild(document.createTextNode(text));
+    chatLog.appendChild(d); chatLog.scrollTop = chatLog.scrollHeight;
+    return d;
+  }
+  function addTrace(title, req, res, isGnani) {
+    const d = document.createElement('div');
+    d.className = 'call' + (isGnani ? ' gnani' : '');
+    d.innerHTML = '<span class="name"></span><pre class="req"></pre><pre class="res"></pre>';
+    d.querySelector('.name').textContent = new Date().toLocaleTimeString() + '  ' + title;
+    d.querySelector('.req').textContent = 'Request: ' + JSON.stringify(req, null, 2);
+    d.querySelector('.res').textContent = 'Response: ' + JSON.stringify(res, null, 2);
+    callLog.appendChild(d); callLog.scrollTop = callLog.scrollHeight;
+  }
+  function setBusy(b) { busy = b; micBtn.disabled = b && !(recorder && recorder.state === 'recording'); }
+
+  // Buyer text (typed, or Gnani transcript exactly as returned) -> existing chat() -> optional Gnani TTS
+  async function handleBuyerText(text) {
+    addMsg('buyer', text);
+    setStatus('RIVA is working…');
+    const out = await call('chat', { history: history, text: text });
+    history = out.history || history;
+    (out.trace || []).forEach(c => addTrace(c.tool, c.args, c.result, false));
+    const bubble = addMsg('riva', out.reply || '(no reply)');
+    if ($('speakToggle').checked && out.reply) {
+      setStatus('Gnani text-to-speech…');
+      const s = await call('speak', { text: out.reply });
+      addTrace('Gnani TTS', s.request, s.response, true);
+      if (s.ok) {
+        const a = document.createElement('audio');
+        a.controls = true; a.src = 'data:audio/mpeg;base64,' + s.audio_b64;
+        bubble.appendChild(a);
+        a.play().catch(() => {});   // if autoplay is blocked, press play on the bubble
+      }
+    }
+    setStatus('');
+  }
+
+  async function sendAudio(b64) {
+    setStatus('Gnani speech-to-text…');
+    const r = await call('transcribe', { audio_b64: b64, mime: 'audio/wav', name: 'buyer.wav' });
+    addTrace('Gnani STT', r.request, r.response, true);
+    if (!r.ok || !r.transcript) { setStatus('Gnani returned no transcript. Try again or type the message.'); return; }
+    await handleBuyerText(r.transcript);
+  }
+
+  // Mic: record -> 16 kHz mono WAV -> bridge -> Gnani STT
+  micBtn.addEventListener('click', async () => {
+    if (recorder && recorder.state === 'recording') { recorder.stop(); return; }
+    if (busy) return;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      chunks = [];
+      recorder = new MediaRecorder(stream);
+      recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+      recorder.onstop = async () => {
+        clearTimeout(recTimer);
+        stream.getTracks().forEach(t => t.stop());
+        micBtn.textContent = 'Speak'; micBtn.classList.remove('recording');
+        if (Date.now() - recStart < 1000) { setStatus('Recording too short, not sent (no Gnani call made).'); return; }
+        setBusy(true);
+        try {
+          setStatus('Preparing audio…');
+          const wavB64 = await toWavBase64(new Blob(chunks, { type: recorder.mimeType }));
+          await sendAudio(wavB64);
+        } catch (err) { setStatus('Error: ' + err.message); }
+        finally { setBusy(false); }
+      };
+      recorder.start(); recStart = Date.now();
+      micBtn.textContent = 'Stop and send'; micBtn.classList.add('recording');
+      setStatus('Recording… click "Stop and send" when done (30 seconds max).');
+      recTimer = setTimeout(() => { if (recorder.state === 'recording') recorder.stop(); }, 30000);
+    } catch (err) {
+      setStatus('Microphone error: ' + err.message + '. Allow microphone access for this site in the address bar.');
+    }
+  });
+
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = input.value.trim(); if (!text || busy) return;
+    input.value = '';
+    setBusy(true);
+    try { await handleBuyerText(text); } catch (err) { setStatus('Error: ' + err.message); }
+    finally { setBusy(false); }
+  });
+  $('reset').addEventListener('click', () => {
+    history = []; chatLog.innerHTML = ''; callLog.innerHTML = ''; setStatus('New conversation started.');
+  });
+
+  // Connection check on load (no Gnani credit used)
+  call('ping').then(r => setStatus(r.ok ? 'Connected to RIVA.' : 'Bridge did not respond correctly.'))
+              .catch(err => setStatus('Cannot reach the Apps Script bridge: ' + err.message));
+
+  // ---- audio helpers ----
+  async function toWavBase64(blob) {
+    const ctx = new AudioContext();
+    const decoded = await ctx.decodeAudioData(await blob.arrayBuffer());
+    const rate = 16000;
+    const off = new OfflineAudioContext(1, Math.ceil(decoded.duration * rate), rate);
+    const src = off.createBufferSource(); src.buffer = decoded; src.connect(off.destination); src.start();
+    const rendered = await off.startRendering();
+    ctx.close();
+    return bytesToBase64(encodeWav(rendered.getChannelData(0), rate));
+  }
+  function encodeWav(samples, rate) {
+    const buf = new ArrayBuffer(44 + samples.length * 2), v = new DataView(buf);
+    const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    w(0, 'RIFF'); v.setUint32(4, 36 + samples.length * 2, true); w(8, 'WAVE'); w(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    w(36, 'data'); v.setUint32(40, samples.length * 2, true);
+    for (let i = 0, o = 44; i < samples.length; i++, o += 2) {
+      const s = Math.max(-1, Math.min(1, samples[i]));
+      v.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+    return new Uint8Array(buf);
+  }
+  function bytesToBase64(bytes) {
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  }
+</script>
+</body>
+</html>

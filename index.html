@@ -109,7 +109,7 @@
       addTrace('Gnani TTS', s.request, s.response, true);
       if (s.ok) {
         const a = document.createElement('audio');
-        a.controls = true; a.src = 'data:audio/mpeg;base64,' + s.audio_b64;
+        a.controls = true; a.src = 'data:' + (s.mime || 'audio/mpeg') + ';base64,' + s.audio_b64;
         bubble.appendChild(a);
         a.play().catch(() => {});   // if autoplay is blocked, press play on the bubble
       }

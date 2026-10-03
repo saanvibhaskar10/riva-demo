@@ -19,33 +19,7 @@
   .buyer { background:var(--buyer); margin-left:auto; }
   .riva { border:1px solid var(--riva); }
   .msg b { display:block; font-size:12px; color:var(--muted); margin-bottom:2px; }
-  .msg.riva { position:relative; padding-right:48px; }
-
-.voice-btn {
-  position:absolute;
-  right:10px;
-  bottom:10px;
-  width:30px;
-  height:30px;
-  padding:0;
-  border-radius:50%;
-  background:#f1f3f5;
-  color:var(--riva);
-  border:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:14px;
-  cursor:pointer;
-}
-
-.voice-btn:hover {
-  background:#e7ebee;
-}
-
-.voice-btn:disabled {
-  opacity:.6;
-}
+  .msg audio { display:block; margin-top:8px; width:100%; }
   .call { background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:10px; font-size:13px; }
   .call .name { font-weight:600; color:var(--riva); }
   .call.gnani .name { color:var(--gnani); }
@@ -70,7 +44,7 @@
     <div class="log" id="chatLog"></div>
     <div class="bar">
       <button type="button" class="mic" id="micBtn">Speak</button>
-      <label><input type="checkbox" id="speakToggle"> Speak replies with Gnani</label>
+      <label><input type="checkbox" id="speakToggle" checked> Speak replies with Gnani</label>
     </div>
     <div class="status" id="status"></div>
     <form id="form">
@@ -96,17 +70,11 @@
 
   // POST as text/plain (no custom headers) so the browser sends a "simple" request with no CORS preflight.
   async function call(action, payload) {
-  const res = await fetch(BRIDGE_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action }, payload || {})) });
-  const text = await res.text();
-  let data;
-  try { data = JSON.parse(text); }
-  catch (e) {
-    const msg = text.replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300);
-    throw new Error('Bridge returned HTML (' + res.status + ') for "' + action + '": ' + msg);
+    const res = await fetch(BRIDGE_URL, { method: 'POST', body: JSON.stringify(Object.assign({ action: action }, payload || {})) });
+    const data = await res.json();
+    if (data && data.ok === false && data.error) throw new Error(data.error);
+    return data;
   }
-  if (data && data.ok === false && data.error) throw new Error(data.error);
-  return data;
-}
 
   function addMsg(who, text) {
     const d = document.createElement('div');
@@ -140,28 +108,11 @@
       const s = await call('speak', { text: out.reply });
       addTrace('Gnani TTS', s.request, s.response, true);
       if (s.ok) {
-  const audio = new Audio(
-    'data:' + (s.mime || 'audio/mpeg') + ';base64,' + s.audio_b64
-  );
-  audio.preload = 'auto';
-
-  const voiceBtn = document.createElement('button');
-  voiceBtn.type = 'button';
-  voiceBtn.className = 'voice-btn';
-  voiceBtn.textContent = '🔊';
-  voiceBtn.title = 'Play RIVA voice';
-  voiceBtn.setAttribute('aria-label', 'Play RIVA voice');
-
-  voiceBtn.onclick = () => {
-    audio.currentTime = 0;
-    audio.play().catch(() => {});
-  };
-
-  bubble.appendChild(voiceBtn);
-
-  // Play automatically after the reply arrives
-  audio.play().catch(() => {});
-}
+        const a = document.createElement('audio');
+        a.controls = true; a.src = 'data:' + (s.mime || 'audio/mpeg') + ';base64,' + s.audio_b64;
+        bubble.appendChild(a);
+        a.play().catch(() => {});   // if autoplay is blocked, press play on the bubble
+      }
     }
     setStatus('');
   }

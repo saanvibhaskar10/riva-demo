@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIVA by Delhivery: let someone you trust receive your parcel</title>
+<meta name="description" content="Authorise a verified family member, roommate or security desk to receive one specific parcel, with their own handover code.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#121417}a:hover{color:#B3241B}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #2457C5;outline-offset:2px}
+</style>
+<style>
+  html{scroll-behavior:smooth}
+  .pill{font:inherit;font-weight:600;border-radius:999px;padding:10px 18px;min-height:44px;cursor:pointer;background:#FFFFFF;color:#121417;border:1.5px solid #8A9099}
+  .pill.on{background:#C8261C;color:#FFFFFF;border-color:#C8261C}
+  [hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div style="font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif; color: #121417; background: #FFFFFF; font-size: 1.0625rem; line-height: 1.55">
+
+  <!-- Header -->
+  <header style="border-bottom: 1px solid #E3E5E8">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 18px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+      <div style="display: flex; align-items: baseline; gap: 10px">
+        <span style="font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 1.6rem; letter-spacing: 0.02em">RIVA</span>
+        <span style="font-size: 0.95rem; color: #4A5059">by Delhivery</span>
+      </div>
+      <nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px; font-weight: 600; font-size: 0.98rem">
+        <a href="#how" style="text-decoration: none">How it works</a>
+        <a href="#privacy" style="text-decoration: none">Privacy</a>
+        <a href="#merchants" style="text-decoration: none">For stores</a>
+        <a href="#signup" style="text-decoration: none; background: #C8261C; color: #FFFFFF; padding: 11px 18px; border-radius: 8px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Get early access</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  
+
+  <!-- Problem band -->
+  <section style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 80px; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
+    <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+      <span style="font-weight: 600; color: #C8261C; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem">For deliveries you can't be home for</span>
+      <h1 style="margin: 0; font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.04; letter-spacing: -0.01em">Can't be at the door? Let someone you trust receive it.</h1>
+      <p style="margin: 0; font-size: 1.2rem; color: #3A4048; max-width: 34rem">RIVA lets you authorise a verified family member, roommate or your building's security desk to receive one specific parcel, with their own handover code. Your OTP and your order details stay with you.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px">
+        <a href="#signup" style="text-decoration: none; background: #C8261C; color: #FFFFFF; font-weight: 600; padding: 14px 24px; border-radius: 10px; min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center">Get early access</a>
+        <a href="#how" style="text-decoration: none; border: 1.5px solid #121417; font-weight: 600; padding: 14px 24px; border-radius: 10px; min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center">See how it works</a>
+      </div>
+      <p style="margin: 0; font-size: 0.95rem; color: #4A5059">Free for shoppers. Opens from the My Orders page of participating stores. Speak or type.</p>
+    </div>
+
+    <!-- Conversation mock -->
+    <div style="flex: 1 1 380px; min-width: 0; background: #F2F3F5; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #4A5059">
+        <span style="font-weight: 600; color: #121417">Talk to RIVA</span>
+        <span>My Orders · Order #ORD001</span>
+      </div>
+      <div style="align-self: flex-end; max-width: 82%; background: #121417; color: #FFFFFF; padding: 12px 16px; border-radius: 16px 16px 4px 16px">I'm in class till 5. Can my mom receive today's parcel?</div>
+      <div style="align-self: flex-start; max-width: 86%; background: #FFFFFF; padding: 12px 16px; border-radius: 16px 16px 16px 4px; border: 1px solid #DADDE1">Manisha (Mother) is in your trusted circle. Shall I let her receive order #ORD001, for today only?</div>
+      <div style="align-self: flex-end; max-width: 82%; background: #121417; color: #FFFFFF; padding: 12px 16px; border-radius: 16px 16px 4px 16px">Yes.</div>
+      <div style="align-self: flex-start; max-width: 86%; background: #FFFFFF; padding: 12px 16px; border-radius: 16px 16px 16px 4px; border: 1px solid #DADDE1">Done. Manisha will get her own handover code. You don't need to share your OTP.</div>
+      <div style="background: #FFFFFF; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; border: 1px solid #DADDE1">
+        <div style="display: flex; gap: 10px; align-items: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E7A46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span>Out for delivery</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E7A46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span>Handed to Manisha, code verified</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E7A46" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <span>Temporary access closed</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section style="background: #121417; color: #EDEFF2">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 72px 24px; display: flex; flex-direction: column; gap: 32px">
+      <h2 style="margin: 0; font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; max-width: 46rem">"Madam, OTP?" And you're in a meeting.</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px">
+        <div style="flex: 1 1 260px; border-top: 2px solid #3A4048; padding-top: 16px">
+          <div style="font-weight: 600; color: #FFFFFF; margin-bottom: 6px">You forward your OTP</div>
+          <div style="color: #B4BAC3">to a family member on WhatsApp, along with your order details.</div>
+        </div>
+        <div style="flex: 1 1 260px; border-top: 2px solid #3A4048; padding-top: 16px">
+          <div style="font-weight: 600; color: #FFFFFF; margin-bottom: 6px">You step out to take calls</div>
+          <div style="color: #B4BAC3">from the courier asking who's at the door and where to go.</div>
+        </div>
+        <div style="flex: 1 1 260px; border-top: 2px solid #3A4048; padding-top: 16px">
+          <div style="font-weight: 600; color: #FFFFFF; margin-bottom: 6px">Or the parcel goes back</div>
+          <div style="color: #B4BAC3">and you wait for a reattempt, even though someone you trust was home.</div>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 1.15rem; color: #FFFFFF; max-width: 44rem">Forwarding your OTP means sharing your own code. With RIVA, the person at the door gets a code of their own.</p>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section id="how" style="max-width: 1160px; margin: 0 auto; padding: 88px 24px; display: flex; flex-direction: column; gap: 40px">
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <span style="font-weight: 600; color: #C8261C; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem">How it works</span>
+      <h2 style="margin: 0; font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1">Three steps. One parcel at a time.</h2>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px">
+      <div style="flex: 1 1 280px; background: #F2F3F5; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 2.4rem; color: #C8261C; line-height: 1">1</span>
+        <h3 style="margin: 0; font-size: 1.3rem; font-weight: 600">Build your trusted circle</h3>
+        <p style="margin: 0; color: #3A4048">Invite family, roommates or your building's security desk. They accept your invite and verify once. Remove anyone, any time.</p>
+      </div>
+      <div style="flex: 1 1 280px; background: #F2F3F5; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 2.4rem; color: #C8261C; line-height: 1">2</span>
+        <h3 style="margin: 0; font-size: 1.3rem; font-weight: 600">Tell RIVA who should receive it</h3>
+        <p style="margin: 0; color: #3A4048">Tap "Talk to RIVA" on My Orders and say who's taking today's parcel. Speak or type. RIVA confirms before anything changes.</p>
+      </div>
+      <div style="flex: 1 1 280px; background: #F2F3F5; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 2.4rem; color: #C8261C; line-height: 1">3</span>
+        <h3 style="margin: 0; font-size: 1.3rem; font-weight: 600">They use their own code</h3>
+        <p style="margin: 0; color: #3A4048">At the door, your contact shares their own handover code. Their access ends when the parcel is delivered, or at the end of the day.</p>
+      </div>
+    </div>
+  </section><section id="privacy" style="background: #F2F3F5">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 88px 24px; display: flex; flex-wrap: wrap; gap: 48px">
+      <div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <span style="font-weight: 600; color: #C8261C; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem">Privacy</span>
+        <h2 style="margin: 0; font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1">Shares only what's needed to hand it over.</h2>
+        <p style="margin: 0; color: #3A4048">Shoppers told us they're happy for family to receive everyday parcels, but not everything, and they don't want their orders on display. So with RIVA, you decide parcel by parcel.</p>
+      </div>
+      <div style="flex: 1.4 1 420px; min-width: 0; display: flex; flex-wrap: wrap; gap: 16px">
+        <div style="flex: 1 1 240px; background: #FFFFFF; border-radius: 14px; padding: 20px">
+          <div style="font-weight: 600; margin-bottom: 4px">Your OTP stays yours</div>
+          <div style="color: #3A4048">Your contact gets a separate code that works for one parcel.</div>
+        </div>
+        <div style="flex: 1 1 240px; background: #FFFFFF; border-radius: 14px; padding: 20px">
+          <div style="font-weight: 600; margin-bottom: 4px">They don't see what you bought</div>
+          <div style="color: #3A4048">Your contact sees the store name and their code. Nothing else.</div>
+        </div>
+        <div style="flex: 1 1 240px; background: #FFFFFF; border-radius: 14px; padding: 20px">
+          <div style="font-weight: 600; margin-bottom: 4px">Nothing left open</div>
+          <div style="color: #3A4048">Access is for one parcel and closes after handover or at day's end.</div>
+        </div>
+        <div style="flex: 1 1 240px; background: #FFFFFF; border-radius: 14px; padding: 20px">
+          <div style="font-weight: 600; margin-bottom: 4px">Sensitive items ask you first</div>
+          <div style="color: #3A4048">Medicines or high-value orders always need your explicit yes.</div>
+        </div>
+        <div style="flex: 1 1 240px; background: #FFFFFF; border-radius: 14px; padding: 20px">
+          <div style="font-weight: 600; margin-bottom: 4px">Cash on delivery, settled</div>
+          <div style="color: #3A4048">RIVA sorts out COD payment before anyone else receives the parcel.</div>
+        </div>
+        <div style="flex: 1 1 240px; background: #FFFFFF; border-radius: 14px; padding: 20px">
+          <div style="font-weight: 600; margin-bottom: 4px">Your address never changes</div>
+          <div style="color: #3A4048">RIVA changes who receives the parcel, never where it goes.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For stores -->
+  <section id="merchants" style="max-width: 1160px; margin: 0 auto; padding: 88px 24px; display: flex; flex-direction: column; gap: 36px">
+    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 46rem">
+      <span style="font-weight: 600; color: #C8261C; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem">For stores shipping with Delhivery</span>
+      <h2 style="margin: 0; font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1">Catch the delivery before it fails.</h2>
+      <p style="margin: 0; color: #3A4048"><strong>Fewer failed handovers. Fewer repeat attempts. More completed deliveries.</strong><br>Give customers a secure way to delegate receipt without sharing their personal OTP.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px">
+      <div style="flex: 1 1 280px; border-top: 3px solid #C8261C; padding-top: 18px">
+        <h3 style="margin: 0 0 8px; font-size: 1.2rem; font-weight: 600">Fewer failed first attempts</h3>
+        <p style="margin: 0; color: #3A4048">Shoppers who know they'll be away hand the parcel to someone who won't be.</p>
+      </div>
+      <div style="flex: 1 1 280px; border-top: 3px solid #C8261C; padding-top: 18px">
+        <h3 style="margin: 0 0 8px; font-size: 1.2rem; font-weight: 600">No new app for your shoppers</h3>
+        <p style="margin: 0; color: #3A4048">RIVA opens from your existing My Orders page. Your brand stays the front door.</p>
+      </div>
+      <div style="flex: 1 1 280px; border-top: 3px solid #C8261C; padding-top: 18px">
+        <h3 style="margin: 0 0 8px; font-size: 1.2rem; font-weight: 600">Built into the delivery itself</h3>
+        <p style="margin: 0; color: #3A4048">Tracking, handover verification and delivery exceptions run on Delhivery's network, where the parcel already is.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sign up -->
+  <section id="signup" style="background: #121417; color: #EDEFF2">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 88px 24px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+      <div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <h2 style="margin: 0; font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; color: #FFFFFF">Be first to try RIVA.</h2>
+        <p style="margin: 0; color: #B4BAC3">Shoppers: we'll tell you when RIVA reaches the stores you order from. Stores: we'll set up a pilot on your My Orders page.</p>
+      </div>
+
+      <div style="flex: 1 1 400px; min-width: 0; background: #FFFFFF; color: #121417; border-radius: 18px; padding: 28px">
+        <div id="thanks" hidden style="flex-direction: column; gap: 10px; padding: 8px 0">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1E7A46" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M7.5 12.5l3 3 6-6.5"></path></svg>
+          <div id="thanksTitle" style="font-family: Archivo, 'Arial Narrow', sans-serif; font-weight: 800; font-size: 1.6rem">You're on the list.</div>
+          <div id="thanksLine" style="color: #3A4048"></div>
+          <button type="button" id="again" style="align-self: flex-start; margin-top: 8px; font: inherit; font-weight: 600; background: none; border: 1.5px solid #121417; border-radius: 10px; padding: 10px 18px; min-height: 44px; cursor: pointer">Sign up someone else</button>
+        </div>
+        <form id="signupForm" novalidate style="display: flex; flex-direction: column; gap: 18px">
+          <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+            <legend style="font-weight: 600; margin-bottom: 8px; padding: 0">I am</legend>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <button type="button" class="pill" data-role="shopper" aria-pressed="true">A shopper</button>
+              <button type="button" class="pill" data-role="store" aria-pressed="false">A store</button>
+            </div>
+          </fieldset>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="riva-name" id="nameLabel" style="font-weight: 600">Your name</label>
+            <input id="riva-name" type="text" autocomplete="name" style="font: inherit; padding: 12px 14px; border: 1.5px solid #8A9099; border-radius: 10px; min-height: 48px; box-sizing: border-box">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="riva-contact" style="font-weight: 600">Mobile number or email</label>
+            <input id="riva-contact" type="text" autocomplete="email" style="font: inherit; padding: 12px 14px; border: 1.5px solid #8A9099; border-radius: 10px; min-height: 48px; box-sizing: border-box">
+          </div>
+          <div id="formError" role="alert" style="color: #A31F16; font-weight: 600"></div>
+          <button type="submit" style="font: inherit; font-weight: 600; background: #C8261C; color: #FFFFFF; border: 0; border-radius: 10px; padding: 14px 22px; min-height: 50px; cursor: pointer">Join early access</button>
+          <p style="margin: 0; font-size: 0.9rem; color: #4A5059">We'll only use this to tell you about RIVA. No spam.</p>
+        </form>
+      </div>
+    </div>
+  </section><footer style="border-top: 1px solid #E3E5E8; height: 80px">
+    <div style="max-width: 1160px; margin: 0 auto; padding: 28px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 0.92rem; color: #4A5059"><span><strong style="color: rgb(18, 20, 23)">RIVA by Delhivery</strong>: Recipient Identity &amp; Verification Agent</span>
+      <span>A concept by SBhaskar for The Ken's Great Rewiring 2026. Not an official Delhivery product.</span>
+    </div>
+  </footer>
+
+  <!-- Footer -->
+  
+</div>
+<script>
+  (function () {
+    var role = 'shopper';
+    var pills = document.querySelectorAll('.pill');
+    var form = document.getElementById('signupForm');
+    var thanks = document.getElementById('thanks');
+    var err = document.getElementById('formError');
+    var nameIn = document.getElementById('riva-name');
+    var contactIn = document.getElementById('riva-contact');
+    function paint() {
+      pills.forEach(function (p) {
+        var on = p.dataset.role === role;
+        p.setAttribute('aria-pressed', on ? 'true' : 'false');
+        p.classList.toggle('on', on);
+      });
+      document.getElementById('nameLabel').textContent = role === 'shopper' ? 'Your name' : 'Store name';
+    }
+    pills.forEach(function (p) { p.addEventListener('click', function () { role = p.dataset.role; paint(); }); });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = nameIn.value.trim(), contact = contactIn.value.trim();
+      if (!name || !contact) { err.textContent = 'Please add your name and a mobile number or email.'; return; }
+      var looksEmail = /.+@.+\..+/.test(contact);
+      if (!looksEmail && contact.replace(/[^0-9]/g, '').length < 10) { err.textContent = 'Enter a valid mobile number or email.'; return; }
+      err.textContent = '';
+      document.getElementById('thanksTitle').textContent = "You're on the list, " + name.split(' ')[0] + '.';
+      document.getElementById('thanksLine').textContent = role === 'shopper'
+        ? "We'll message you when RIVA arrives on the My Orders page of a store you shop with."
+        : 'Our team will get in touch about a pilot on your My Orders page.';
+      form.hidden = true; thanks.hidden = false; thanks.style.display = 'flex';
+    });
+    document.getElementById('again').addEventListener('click', function () {
+      nameIn.value = ''; contactIn.value = ''; thanks.hidden = true; thanks.style.display = ''; form.hidden = false; nameIn.focus();
+    });
+    paint();
+  })();
+</script>
+</body>
+</html>

@@ -19,7 +19,33 @@
   .buyer { background:var(--buyer); margin-left:auto; }
   .riva { border:1px solid var(--riva); }
   .msg b { display:block; font-size:12px; color:var(--muted); margin-bottom:2px; }
-  .msg audio { display:block; margin-top:8px; width:100%; }
+  .msg.riva { position:relative; padding-right:48px; }
+
+.voice-btn {
+  position:absolute;
+  right:10px;
+  bottom:10px;
+  width:30px;
+  height:30px;
+  padding:0;
+  border-radius:50%;
+  background:#f1f3f5;
+  color:var(--riva);
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.voice-btn:hover {
+  background:#e7ebee;
+}
+
+.voice-btn:disabled {
+  opacity:.6;
+}
   .call { background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:10px; font-size:13px; }
   .call .name { font-weight:600; color:var(--riva); }
   .call.gnani .name { color:var(--gnani); }
@@ -108,11 +134,28 @@
       const s = await call('speak', { text: out.reply });
       addTrace('Gnani TTS', s.request, s.response, true);
       if (s.ok) {
-        const a = document.createElement('audio');
-        a.controls = true; a.src = 'data:' + (s.mime || 'audio/mpeg') + ';base64,' + s.audio_b64;
-        bubble.appendChild(a);
-        a.play().catch(() => {});   // if autoplay is blocked, press play on the bubble
-      }
+  const audio = new Audio(
+    'data:' + (s.mime || 'audio/mpeg') + ';base64,' + s.audio_b64
+  );
+  audio.preload = 'auto';
+
+  const voiceBtn = document.createElement('button');
+  voiceBtn.type = 'button';
+  voiceBtn.className = 'voice-btn';
+  voiceBtn.textContent = '🔊';
+  voiceBtn.title = 'Play RIVA voice';
+  voiceBtn.setAttribute('aria-label', 'Play RIVA voice');
+
+  voiceBtn.onclick = () => {
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  };
+
+  bubble.appendChild(voiceBtn);
+
+  // Play automatically after the reply arrives
+  audio.play().catch(() => {});
+}
     }
     setStatus('');
   }
